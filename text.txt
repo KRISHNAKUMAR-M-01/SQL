@@ -1,0 +1,144 @@
+SQL> create table STUDENT(regno number(10) primary key,name varchar2(30),department varchar2(20),year number);
+create table STUDENT(regno number(10) primary key,name varchar2(30),department varchar2(20),year number)
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> create table STUDENTS(regno number(10) primary key,name varchar2(30),department varchar2(20),year number);
+
+Table created.
+
+SQL> 
+SQL> create table employees(empid number(10) ,empname varchar2(25),salary number(8,2),designation varchar2(20));
+create table employees(empid number(10) ,empname varchar2(25),salary number(8,2),designation varchar2(20))
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> create table employee(empid number(10) ,empname varchar2(25),salary number(8,2),designation varchar2(20));
+create table employee(empid number(10) ,empname varchar2(25),salary number(8,2),designation varchar2(20))
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> create table empl(empid number(10) ,empname varchar2(25),salary number(8,2),designation varchar2(20));
+
+Table created.
+
+SQL> alter table empl add column email varchar2(40);
+alter table empl add column email varchar2(40)
+                     *
+ERROR at line 1:
+ORA-00904: : invalid identifier 
+
+
+SQL> alter table empl add email varchar2(40);
+
+Table altered.
+
+SQL> desc empl
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPID                                              NUMBER(10)
+ EMPNAME                                            VARCHAR2(25)
+ SALARY                                             NUMBER(8,2)
+ DESIGNATION                                        VARCHAR2(20)
+ EMAIL                                              VARCHAR2(40)
+
+SQL> alter table empl modify column salary varchar(10,2);
+alter table empl modify column salary varchar(10,2)
+                                      *
+ERROR at line 1:
+ORA-00905: missing keyword 
+
+
+SQL> alter table empl modify  salary varchar(10,2);
+alter table empl modify  salary varchar(10,2)
+                                          *
+ERROR at line 1:
+ORA-00907: missing right parenthesis 
+
+
+SQL> alter table empl modify  salary varchar2(10,2);
+alter table empl modify  salary varchar2(10,2)
+                                           *
+ERROR at line 1:
+ORA-00907: missing right parenthesis 
+
+
+SQL> alter table empl modify  salary number(10,2);
+
+Table altered.
+
+SQL> desc empl
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPID                                              NUMBER(10)
+ EMPNAME                                            VARCHAR2(25)
+ SALARY                                             NUMBER(10,2)
+ DESIGNATION                                        VARCHAR2(20)
+ EMAIL                                              VARCHAR2(40)
+
+SQL> alter table empl drop column designation;
+
+Table altered.
+
+SQL> desc empl
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPID                                              NUMBER(10)
+ EMPNAME                                            VARCHAR2(25)
+ SALARY                                             NUMBER(10,2)
+ EMAIL                                              VARCHAR2(40)
+
+SQL> rename students to student_info;
+
+Table renamed.
+
+SQL> desc student_info;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ REGNO                                     NOT NULL NUMBER(10)
+ NAME                                               VARCHAR2(30)
+ DEPARTMENT                                         VARCHAR2(20)
+ YEAR                                               NUMBER
+
+SQL> drop table empl;
+
+Table dropped.
+
+SQL> create table course(courseid varchar2(10) primary key,coursename varchar2(20) not null,duration(in_year) number);
+create table course(courseid varchar2(10) primary key,coursename varchar2(20) not null,duration(in_year) number)
+                                                                                               *
+ERROR at line 1:
+ORA-00902: invalid datatype 
+
+
+SQL> create table course(courseid varchar2(10) primary key,coursename varchar2(20) not null,duration(in_year) number(10));
+create table course(courseid varchar2(10) primary key,coursename varchar2(20) not null,duration(in_year) number(10))
+                                                                                               *
+ERROR at line 1:
+ORA-00902: invalid datatype 
+
+
+SQL> create table course(courseid varchar2(10) primary key,coursename varchar2(20) not null,duration_year number(10));
+
+Table created.
+
+SQL> alter table student_info add email varchar2(20) unique;
+
+Table altered.
+
+SQL> desc student_info;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ REGNO                                     NOT NULL NUMBER(10)
+ NAME                                               VARCHAR2(30)
+ DEPARTMENT                                         VARCHAR2(20)
+ YEAR                                               NUMBER
+ EMAIL                                              VARCHAR2(20)
+
+SQL> spool off;

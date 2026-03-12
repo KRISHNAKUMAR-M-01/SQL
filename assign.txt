@@ -1,0 +1,179 @@
+SQL> create table student(rollno number(10) primary key,name varchar2(15) not null,email varchar2(20) unique,age number check(age>17));
+
+Table created.
+
+SQL> create table department(deptid varchar2(5) primary key,deptname varchar2(10) unique);
+
+Table created.
+
+SQL> CREATE TABLE employee (empid VARCHAR2(5) PRIMARY KEY,empname VARCHAR2(15) NOT NULL, salary NUMBER(10) CHECK (salary > 5000),deptid varchar2(5),FOREIGN KEY (deptid)  REFERENCES department(deptid));
+
+Table created.
+
+SQL> CREATE TABLE COURSE(COURSEID NUMBER(5) PRIMARY KEY,COURSENAME VARCHAR2(10) NOT NULL,DURATION NUMBER CHECK(DURATION>0));
+CREATE TABLE COURSE(COURSEID NUMBER(5) PRIMARY KEY,COURSENAME VARCHAR2(10) NOT NULL,DURATION NUMBER CHECK(DURATION>0))
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> DROP TABLE COURSE;
+
+Table dropped.
+
+SQL> CREATE TABLE COURSE(COURSEID NUMBER(5) PRIMARY KEY,COURSENAME VARCHAR2(10) NOT NULL,DURATION NUMBER CHECK(DURATION>0));
+
+Table created.
+
+SQL> desc student;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ROLLNO                                    NOT NULL NUMBER(10)
+ NAME                                      NOT NULL VARCHAR2(15)
+ EMAIL                                              VARCHAR2(20)
+ AGE                                                NUMBER
+
+SQL> alter table student modify rollno varchar2(10) primary key;
+alter table student modify rollno varchar2(10) primary key
+                                               *
+ERROR at line 1:
+ORA-02260: table can have only one primary key 
+
+
+SQL> alter table student add constraint pk_student primary key(rollno);
+alter table student add constraint pk_student primary key(rollno)
+                                              *
+ERROR at line 1:
+ORA-02260: table can have only one primary key 
+
+
+SQL> drop table emp;
+
+Table dropped.
+
+SQL> create table emp(name varchar2(10),empid number);
+
+Table created.
+
+SQL> desc emp;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ NAME                                               VARCHAR2(10)
+ EMPID                                              NUMBER
+
+SQL> alter table emp add constraint na_me primary key(name);
+
+Table altered.
+
+SQL> desc emp;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ NAME                                      NOT NULL VARCHAR2(10)
+ EMPID                                              NUMBER
+
+SQL> alter table emp add constraint emp_id unique(empid);
+
+Table altered.
+
+SQL> desc emp;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ NAME                                      NOT NULL VARCHAR2(10)
+ EMPID                                              NUMBER
+
+SQL> alter table emp drop constraint emp_id;
+
+Table altered.
+
+SQL> alter table emp drop constraint na_me;
+
+Table altered.
+
+SQL> desc emp;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ NAME                                               VARCHAR2(10)
+ EMPID                                              NUMBER
+
+SQL> alter table employee drop constraint empid;
+alter table employee drop constraint empid
+                                     *
+ERROR at line 1:
+ORA-02443: Cannot drop constraint  - nonexistent constraint 
+
+
+SQL> alter table employee drop constraint primary key(empid);
+alter table employee drop constraint primary key(empid)
+                                             *
+ERROR at line 1:
+ORA-01735: invalid ALTER TABLE option 
+
+
+SQL> select constraint_name ,table_name,constraint_type from user_constraints where table='student';
+select constraint_name ,table_name,constraint_type from user_constraints where table='student'
+                                                                               *
+ERROR at line 1:
+ORA-00936: missing expression 
+
+
+SQL> select constraint_name ,table_name,constraint_type from user_constraints where table='STUDENT';
+select constraint_name ,table_name,constraint_type from user_constraints where table='STUDENT'
+                                                                               *
+ERROR at line 1:
+ORA-00936: missing expression 
+
+
+SQL> select constraint_name ,table_name,p from user_constraints where table='student';
+select constraint_name ,table_name,p from user_constraints where table='student'
+                                                                 *
+ERROR at line 1:
+ORA-00936: missing expression 
+
+
+SQL> select constraint_name ,table_name,constraint_type from user_constraints where table_name='STUDENT';
+
+CONSTRAINT_NAME                TABLE_NAME                     C                 
+------------------------------ ------------------------------ -                 
+SYS_C007081                    STUDENT                        C                 
+SYS_C007082                    STUDENT                        C                 
+SYS_C007083                    STUDENT                        P                 
+SYS_C007084                    STUDENT                        U                 
+
+SQL> 
+SQL> alter table student drop constraint SYS_C007083;
+
+Table altered.
+
+SQL> desc student;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ROLLNO                                             NUMBER(10)
+ NAME                                      NOT NULL VARCHAR2(15)
+ EMAIL                                              VARCHAR2(20)
+ AGE                                                NUMBER
+
+SQL> alter table student add constraint pri primary key(rollno);
+
+Table altered.
+
+SQL> desc student;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ROLLNO                                    NOT NULL NUMBER(10)
+ NAME                                      NOT NULL VARCHAR2(15)
+ EMAIL                                              VARCHAR2(20)
+ AGE                                                NUMBER
+
+SQL> alter table student enable constraint pri;
+
+Table altered.
+
+SQL> alter table student disable constraint pri;
+
+Table altered.
+
+SQL> alter table student rename constraint pri to prim;
+
+Table altered.
+
+SQL> spool off;

@@ -1,0 +1,191 @@
+SQL> create table student(rollno number(10) constraint rol primary key,name varchar2(15) constraint nam not null,email varchar2(20) constraint ema unique,age number constraint age check(age>17));
+create table student(rollno number(10) constraint rol primary key,name varchar2(15) constraint nam not null,email varchar2(20) constraint ema unique,age number constraint age check(age>17))
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> drop table student;
+
+Table dropped.
+
+SQL> create table student(rollno number(10) constraint rol primary key,name varchar2(15) constraint nam not null,email varchar2(20) constraint ema unique,age number constraint age check(age>17));
+
+Table created.
+
+SQL> drop table department;
+drop table department
+           *
+ERROR at line 1:
+ORA-02449: unique/primary keys in table referenced by foreign keys 
+
+
+SQL> drop table employee;
+
+Table dropped.
+
+SQL> drop table department;
+
+Table dropped.
+
+SQL> create table department(deptid varchar2(5) constraint dep1 primary key,deptname varchar2(10) constraint dep2 unique);
+
+Table created.
+
+SQL> CREATE TABLE employee (empid VARCHAR2(5) constraint emp1 PRIMARY KEY,empname VARCHAR2(15) constraint emp2 NOT NULL, salary NUMBER(10) constraint sal CHECK (salary > 5000),deptid varchar2(5),constraint depemp FOREIGN KEY (deptid)  REFERENCES department(deptid));
+
+Table created.
+
+SQL> drop table course;
+
+Table dropped.
+
+SQL> CREATE TABLE COURSE(COURSEID NUMBER(5) constraint cou1 PRIMARY KEY,COURSENAME VARCHAR2(10) constraint cou2 NOT NULL,DURATION NUMBER constraint dur CHECK(DURATION>0));
+
+Table created.
+
+SQL> alter table student drop constraint rol;
+
+Table altered.
+
+SQL> desc student;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ROLLNO                                             NUMBER(10)
+ NAME                                      NOT NULL VARCHAR2(15)
+ EMAIL                                              VARCHAR2(20)
+ AGE                                                NUMBER
+
+SQL> alter table student add constraint rol primary key(rollno);
+
+Table altered.
+
+SQL> desc student;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ROLLNO                                    NOT NULL NUMBER(10)
+ NAME                                      NOT NULL VARCHAR2(15)
+ EMAIL                                              VARCHAR2(20)
+ AGE                                                NUMBER
+
+SQL> alter table student drop constraint ema;
+
+Table altered.
+
+SQL> alter table student add constraint ema unique(email);
+
+Table altered.
+
+SQL> desc student;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ROLLNO                                    NOT NULL NUMBER(10)
+ NAME                                      NOT NULL VARCHAR2(15)
+ EMAIL                                              VARCHAR2(20)
+ AGE                                                NUMBER
+
+SQL> alter table student drop constraint sal;
+alter table student drop constraint sal
+                                    *
+ERROR at line 1:
+ORA-02443: Cannot drop constraint  - nonexistent constraint 
+
+
+SQL> alter table employee drop constraint sal;
+
+Table altered.
+
+SQL> alter table employee add constraint sal check(salary>10000)(salary);
+alter table employee add constraint sal check(salary>10000)(salary)
+                                                            *
+ERROR at line 1:
+ORA-01735: invalid ALTER TABLE option 
+
+
+SQL> alter table employee add constraint sal check(salary>10000);
+
+Table altered.
+
+SQL> alter table employee drop constraint depemp;
+
+Table altered.
+
+SQL> alter table employee add constraint depemp foreign key(deptid) references department(deptid);
+
+Table altered.
+
+SQL> alter table student drop constraint ema ;
+
+Table altered.
+
+SQL> alter table employee drop constraint sal;
+
+Table altered.
+
+SQL> alter table course disable constraint dur;
+
+Table altered.
+
+SQL> desc course;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ COURSEID                                  NOT NULL NUMBER(5)
+ COURSENAME                                NOT NULL VARCHAR2(10)
+ DURATION                                           NUMBER
+
+SQL> insert into course values(&courseid,'&coursename',&duration);
+Enter value for courseid: 101
+Enter value for coursename: sql
+Enter value for duration: 0
+old   1: insert into course values(&courseid,'&coursename',&duration)
+new   1: insert into course values(101,'sql',0)
+
+1 row created.
+
+SQL> alter table course enable constraint dur;
+alter table course enable constraint dur
+                                     *
+ERROR at line 1:
+ORA-02293: cannot validate (SYSTEM.DUR) - check constraint violated 
+
+
+SQL> truncate table course;
+
+Table truncated.
+
+SQL> alter table course enable constraint dur;
+
+Table altered.
+
+SQL> insert into course values(&courseid,'&coursename',&duration);
+Enter value for courseid: 101
+Enter value for coursename: sql
+Enter value for duration: 0
+old   1: insert into course values(&courseid,'&coursename',&duration)
+new   1: insert into course values(101,'sql',0)
+insert into course values(101,'sql',0)
+*
+ERROR at line 1:
+ORA-02290: check constraint (SYSTEM.DUR) violated 
+
+
+SQL> /
+Enter value for courseid: 101
+Enter value for coursename: sql
+Enter value for duration: 2
+old   1: insert into course values(&courseid,'&coursename',&duration)
+new   1: insert into course values(101,'sql',2)
+
+1 row created.
+
+SQL> select * from course;
+
+  COURSEID COURSENAME   DURATION                                                
+---------- ---------- ----------                                                
+       101 sql                 2                                                
+
+SQL> alter table course rename constraint dur to dura;
+
+Table altered.
+
+SQL> spool off;

@@ -1,0 +1,459 @@
+SQL> drop student;
+drop student
+     *
+ERROR at line 1:
+ORA-00950: invalid DROP option 
+
+
+SQL> drop table student;
+
+Table dropped.
+
+SQL> drop table course;
+
+Table dropped.
+
+SQL> create table students(Student_id varchar2(5) primary key,student_name varchar2(20),course_id varchar2(5),advisor_id varchar2(5));
+create table students(Student_id varchar2(5) primary key,student_name varchar2(20),course_id varchar2(5),advisor_id varchar2(5))
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> drop table students;
+
+Table dropped.
+
+SQL> create table students(Student_id varchar2(5) primary key,student_name varchar2(20),course_id varchar2(5),advisor_id varchar2(5));
+
+Table created.
+
+SQL> desc students;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUDENT_ID                                NOT NULL VARCHAR2(5)
+ STUDENT_NAME                                       VARCHAR2(20)
+ COURSE_ID                                          VARCHAR2(5)
+ ADVISOR_ID                                         VARCHAR2(5)
+
+SQL> create table courses(course_id varchar2(5) primary key,course_name varchar2(5),duration number);
+
+Table created.
+
+SQL> desc courses;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ COURSE_ID                                 NOT NULL VARCHAR2(5)
+ COURSE_NAME                                        VARCHAR2(5)
+ DURATION                                           NUMBER
+
+SQL> create table advisors(advisor_id varchar2(5) primary key,advisor_name varchar2(20));
+
+Table created.
+
+SQL> desc advisors;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ADVISOR_ID                                NOT NULL VARCHAR2(5)
+ ADVISOR_NAME                                       VARCHAR2(20)
+
+SQL> create  table marks(student_id varchar2(5),subject varchar2(20),score number);
+
+Table created.
+
+SQL> desc marks;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUDENT_ID                                         VARCHAR2(5)
+ SUBJECT                                            VARCHAR2(20)
+ SCORE                                              NUMBER
+
+SQL> insert into students values('&student_id','&student_name','&course_id','&advisor_id');
+Enter value for student_id: S01
+Enter value for student_name: Krish
+Enter value for course_id: C01
+Enter value for advisor_id: A01
+old   1: insert into students values('&student_id','&student_name','&course_id','&advisor_id')
+new   1: insert into students values('S01','Krish','C01','A01')
+
+1 row created.
+
+SQL> /
+Enter value for student_id: S02
+Enter value for student_name: Kishore
+Enter value for course_id: C02
+Enter value for advisor_id: A02
+old   1: insert into students values('&student_id','&student_name','&course_id','&advisor_id')
+new   1: insert into students values('S02','Kishore','C02','A02')
+
+1 row created.
+
+SQL> /
+Enter value for student_id: S03
+Enter value for student_name: jeba
+Enter value for course_id: C01
+Enter value for advisor_id: A01
+old   1: insert into students values('&student_id','&student_name','&course_id','&advisor_id')
+new   1: insert into students values('S03','jeba','C01','A01')
+
+1 row created.
+
+SQL> /
+Enter value for student_id: S04
+Enter value for student_name: Deva
+Enter value for course_id: C03
+Enter value for advisor_id: A03
+old   1: insert into students values('&student_id','&student_name','&course_id','&advisor_id')
+new   1: insert into students values('S04','Deva','C03','A03')
+
+1 row created.
+
+SQL> insert into courses values('&course_id','&course_name',&duration);
+Enter value for course_id: C01
+Enter value for course_name: COMPUTER SCIENCE
+Enter value for duration: 36
+old   1: insert into courses values('&course_id','&course_name',&duration)
+new   1: insert into courses values('C01','COMPUTER SCIENCE',36)
+insert into courses values('C01','COMPUTER SCIENCE',36)
+                                 *
+ERROR at line 1:
+ORA-12899: value too large for column "SYSTEM"."COURSES"."COURSE_NAME" (actual: 
+16, maximum: 5) 
+
+
+SQL> /
+Enter value for course_id: C02
+Enter value for course_name: DATA SCIENCE
+Enter value for duration: 24
+old   1: insert into courses values('&course_id','&course_name',&duration)
+new   1: insert into courses values('C02','DATA SCIENCE',24)
+insert into courses values('C02','DATA SCIENCE',24)
+                                 *
+ERROR at line 1:
+ORA-12899: value too large for column "SYSTEM"."COURSES"."COURSE_NAME" (actual: 
+12, maximum: 5) 
+
+
+SQL> alter table course modify course_name varchar2(30);
+alter table course modify course_name varchar2(30)
+*
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> alter table courses modify course_name varchar2(30);
+
+Table altered.
+
+SQL> insert into courses values('&course_id','&course_name',&duration);
+Enter value for course_id: CO1
+Enter value for course_name: COMPUTER SCIENCE
+Enter value for duration: 36
+old   1: insert into courses values('&course_id','&course_name',&duration)
+new   1: insert into courses values('CO1','COMPUTER SCIENCE',36)
+
+1 row created.
+
+SQL> C02
+SP2-0023: String not found.
+SQL> /
+Enter value for course_id: C02
+Enter value for course_name: DATA SCIENCE
+Enter value for duration: 24
+old   1: insert into courses values('&course_id','&course_name',&duration)
+new   1: insert into courses values('C02','DATA SCIENCE',24)
+
+1 row created.
+
+SQL> /
+Enter value for course_id: C03
+Enter value for course_name: CYBER SECURITY
+Enter value for duration: 30
+old   1: insert into courses values('&course_id','&course_name',&duration)
+new   1: insert into courses values('C03','CYBER SECURITY',30)
+
+1 row created.
+
+SQL> insert into advisors values('&advisor_id','&advisor_name');
+Enter value for advisor_id: A01
+Enter value for advisor_name: DR. THOR
+old   1: insert into advisors values('&advisor_id','&advisor_name')
+new   1: insert into advisors values('A01','DR. THOR')
+
+1 row created.
+
+SQL> /
+Enter value for advisor_id: A02
+Enter value for advisor_name: DR. GOKU
+old   1: insert into advisors values('&advisor_id','&advisor_name')
+new   1: insert into advisors values('A02','DR. GOKU')
+
+1 row created.
+
+SQL> /
+Enter value for advisor_id: A03
+Enter value for advisor_name: DR. LUFFY
+old   1: insert into advisors values('&advisor_id','&advisor_name')
+new   1: insert into advisors values('A03','DR. LUFFY')
+
+1 row created.
+
+SQL> insert into courses values('&student_id','&subject',&SCORE);
+Enter value for student_id: S01
+Enter value for subject: DATABASE
+Enter value for score: 85
+old   1: insert into courses values('&student_id','&subject',&SCORE)
+new   1: insert into courses values('S01','DATABASE',85)
+
+1 row created.
+
+SQL> /
+Enter value for student_id: A02
+Enter value for subject: PYTHON
+Enter value for score: 90
+old   1: insert into courses values('&student_id','&subject',&SCORE)
+new   1: insert into courses values('A02','PYTHON',90)
+
+1 row created.
+
+SQL> /
+Enter value for student_id: S03
+Enter value for subject: DATABASE
+Enter value for score: 78
+old   1: insert into courses values('&student_id','&subject',&SCORE)
+new   1: insert into courses values('S03','DATABASE',78)
+
+1 row created.
+
+SQL> /
+Enter value for student_id: S04
+Enter value for subject: SECURITY
+Enter value for score: 88
+old   1: insert into courses values('&student_id','&subject',&SCORE)
+new   1: insert into courses values('S04','SECURITY',88)
+
+1 row created.
+
+SQL> select s.student_name,c.course_name from students s,courses c where s.course_id =c.course_id;
+
+STUDENT_NAME         COURSE_NAME                                                
+-------------------- ------------------------------                             
+Kishore              DATA SCIENCE                                               
+Deva                 CYBER SECURITY                                             
+
+SQL> select s.student_name,c.course_name,c.duration from students s,courses c where s.course_id =c.course_id;
+
+STUDENT_NAME         COURSE_NAME                      DURATION                  
+-------------------- ------------------------------ ----------                  
+Kishore              DATA SCIENCE                           24                  
+Deva                 CYBER SECURITY                         30                  
+
+SQL> select s.student_name,c.course_name,c.duration from students s,courses c where c.course_id =s.course_id;
+
+STUDENT_NAME         COURSE_NAME                      DURATION                  
+-------------------- ------------------------------ ----------                  
+Kishore              DATA SCIENCE                           24                  
+Deva                 CYBER SECURITY                         30                  
+
+SQL> select * from students;
+
+STUDE STUDENT_NAME         COURS ADVIS                                          
+----- -------------------- ----- -----                                          
+S01   Krish                C01   A01                                            
+S02   Kishore              C02   A02                                            
+S03   jeba                 C01   A01                                            
+S04   Deva                 C03   A03                                            
+
+SQL> select * from courses;
+
+COURS COURSE_NAME                      DURATION                                 
+----- ------------------------------ ----------                                 
+CO1   COMPUTER SCIENCE                       36                                 
+C02   DATA SCIENCE                           24                                 
+C03   CYBER SECURITY                         30                                 
+S01   DATABASE                               85                                 
+A02   PYTHON                                 90                                 
+S03   DATABASE                               78                                 
+S04   SECURITY                               88                                 
+
+7 rows selected.
+
+SQL> select * from marks;
+
+no rows selected
+
+SQL> select * from advisors;
+
+ADVIS ADVISOR_NAME                                                              
+----- --------------------                                                      
+A01   DR. THOR                                                                  
+A02   DR. GOKU                                                                  
+A03   DR. LUFFY                                                                 
+
+SQL> delete from courses where course_id='S01';
+
+1 row deleted.
+
+SQL> delete from courses where course_id='S02';
+
+0 rows deleted.
+
+SQL> delete from courses where course_id='S03';
+
+1 row deleted.
+
+SQL> delete from courses where course_id='S04';
+
+1 row deleted.
+
+SQL> delete from courses where course_id='A02';
+
+1 row deleted.
+
+SQL> select * from courses;
+
+COURS COURSE_NAME                      DURATION                                 
+----- ------------------------------ ----------                                 
+CO1   COMPUTER SCIENCE                       36                                 
+C02   DATA SCIENCE                           24                                 
+C03   CYBER SECURITY                         30                                 
+
+SQL> select s.student_name,c.course_name,c.duration from students s,courses c where s.course_id =c.course_id;
+
+STUDENT_NAME         COURSE_NAME                      DURATION                  
+-------------------- ------------------------------ ----------                  
+Kishore              DATA SCIENCE                           24                  
+Deva                 CYBER SECURITY                         30                  
+
+SQL> select s.student_name,c.course_name,c.duration from students s,courses c where c.course_id =s.course_id;
+
+STUDENT_NAME         COURSE_NAME                      DURATION                  
+-------------------- ------------------------------ ----------                  
+Kishore              DATA SCIENCE                           24                  
+Deva                 CYBER SECURITY                         30                  
+
+SQL> select * from students;
+
+STUDE STUDENT_NAME         COURS ADVIS                                          
+----- -------------------- ----- -----                                          
+S01   Krish                C01   A01                                            
+S02   Kishore              C02   A02                                            
+S03   jeba                 C01   A01                                            
+S04   Deva                 C03   A03                                            
+
+SQL> select * from courses;
+
+COURS COURSE_NAME                      DURATION                                 
+----- ------------------------------ ----------                                 
+CO1   COMPUTER SCIENCE                       36                                 
+C02   DATA SCIENCE                           24                                 
+C03   CYBER SECURITY                         30                                 
+
+SQL> select * from marks;
+
+no rows selected
+
+SQL> select * from advisors;
+
+ADVIS ADVISOR_NAME                                                              
+----- --------------------                                                      
+A01   DR. THOR                                                                  
+A02   DR. GOKU                                                                  
+A03   DR. LUFFY                                                                 
+
+SQL> insert into marks values('&student_id','&subject',&SCORE)
+  2  ;
+Enter value for student_id: S01
+Enter value for subject: DATABASE
+Enter value for score: 85
+old   1: insert into marks values('&student_id','&subject',&SCORE)
+new   1: insert into marks values('S01','DATABASE',85)
+
+1 row created.
+
+SQL> /
+Enter value for student_id: S02
+Enter value for subject: PYTHON
+Enter value for score: 90
+old   1: insert into marks values('&student_id','&subject',&SCORE)
+new   1: insert into marks values('S02','PYTHON',90)
+
+1 row created.
+
+SQL> /
+Enter value for student_id: S03
+Enter value for subject: DATABASE
+Enter value for score: 78
+old   1: insert into marks values('&student_id','&subject',&SCORE)
+new   1: insert into marks values('S03','DATABASE',78)
+
+1 row created.
+
+SQL> /
+Enter value for student_id: S04
+Enter value for subject: SECURITY
+Enter value for score: 88
+old   1: insert into marks values('&student_id','&subject',&SCORE)
+new   1: insert into marks values('S04','SECURITY',88)
+
+1 row created.
+
+SQL> SELECT * FROM MARKS;
+
+STUDE SUBJECT                   SCORE                                           
+----- -------------------- ----------                                           
+S01   DATABASE                     85                                           
+S02   PYTHON                       90                                           
+S03   DATABASE                     78                                           
+S04   SECURITY                     88                                           
+
+SQL> select s.student_name,c.course_name from students s,courses c where s.course_id=c.course_id;
+
+STUDENT_NAME         COURSE_NAME                                                
+-------------------- ------------------------------                             
+Kishore              DATA SCIENCE                                               
+Deva                 CYBER SECURITY                                             
+
+SQL> desc students;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUDENT_ID                                NOT NULL VARCHAR2(5)
+ STUDENT_NAME                                       VARCHAR2(20)
+ COURSE_ID                                          VARCHAR2(5)
+ ADVISOR_ID                                         VARCHAR2(5)
+
+SQL> desc courses;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ COURSE_ID                                 NOT NULL VARCHAR2(5)
+ COURSE_NAME                                        VARCHAR2(30)
+ DURATION                                           NUMBER
+
+SQL> desc marks;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUDENT_ID                                         VARCHAR2(5)
+ SUBJECT                                            VARCHAR2(20)
+ SCORE                                              NUMBER
+
+SQL> desc advisor;
+ERROR:
+ORA-04043: object advisor does not exist 
+
+
+SQL> desc advisors;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ADVISOR_ID                                NOT NULL VARCHAR2(5)
+ ADVISOR_NAME                                       VARCHAR2(20)
+
+SQL> SELECT s.student_name, c.course_name
+  2  FROM students s, courses c
+  3  WHERE s.course_id = c.course_id;
+
+STUDENT_NAME         COURSE_NAME                                                
+-------------------- ------------------------------                             
+Kishore              DATA SCIENCE                                               
+Deva                 CYBER SECURITY                                             
+
+SQL> spool off;

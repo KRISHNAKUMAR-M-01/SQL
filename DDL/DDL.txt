@@ -1,0 +1,176 @@
+SQL> drop table department;
+
+Table dropped.
+
+SQL> create table department;
+create table department
+                      *
+ERROR at line 1:
+ORA-00906: missing left parenthesis 
+
+
+SQL> create table department(dept_id varchar2(5) constraint dep_pk primary key,dept_name varchar2(20) constraint dep_uni unique,location varchar2(20) constraint loc_nn not null);
+
+Table created.
+
+SQL> desc department;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DEPT_ID                                   NOT NULL VARCHAR2(5)
+ DEPT_NAME                                          VARCHAR2(20)
+ LOCATION                                  NOT NULL VARCHAR2(20)
+
+SQL> drop table employee;
+
+Table dropped.
+
+SQL> create table employee(emp_id varchar(5) constraint emp_pk primary key,emp_name constraint emp_nn not null,salary number(10) constraint sal_ch check(salary>5000));
+create table employee(emp_id varchar(5) constraint emp_pk primary key,emp_name constraint emp_nn not null,salary number(10) constraint sal_ch check(salary>5000))
+                                                                      *
+ERROR at line 1:
+ORA-02263: need to specify the datatype for this column 
+
+
+SQL> create table employee(emp_id varchar(5) constraint emp_pk primary key,emp_name varchar2(20) constraint emp_nn not null,salary number(10) constraint sal_ch check(salary>5000));
+
+Table created.
+
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMP_ID                                    NOT NULL VARCHAR2(5)
+ EMP_NAME                                  NOT NULL VARCHAR2(20)
+ SALARY                                             NUMBER(10)
+
+SQL> alter table employee add email varchar(20);
+
+Table altered.
+
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMP_ID                                    NOT NULL VARCHAR2(5)
+ EMP_NAME                                  NOT NULL VARCHAR2(20)
+ SALARY                                             NUMBER(10)
+ EMAIL                                              VARCHAR2(20)
+
+SQL> alter table employee modify emp_name varchar2(30);
+
+Table altered.
+
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMP_ID                                    NOT NULL VARCHAR2(5)
+ EMP_NAME                                  NOT NULL VARCHAR2(30)
+ SALARY                                             NUMBER(10)
+ EMAIL                                              VARCHAR2(20)
+
+SQL> alter table employee modify email constraint ema_uni unique;
+
+Table altered.
+
+SQL> rename table employee to emp_details;
+rename table employee to emp_details
+       *
+ERROR at line 1:
+ORA-00903: invalid table name 
+
+
+SQL> alter table employee rename table employee to emp_details;
+alter table employee rename table employee to emp_details
+                            *
+ERROR at line 1:
+ORA-14155: missing PARTITION or SUBPARTITION keyword 
+
+
+SQL> alter table employee rename employee to emp_details;
+alter table employee rename employee to emp_details
+                            *
+ERROR at line 1:
+ORA-14155: missing PARTITION or SUBPARTITION keyword 
+
+
+SQL> rename employee to emp_details;
+
+Table renamed.
+
+SQL> desc emp_details;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMP_ID                                    NOT NULL VARCHAR2(5)
+ EMP_NAME                                  NOT NULL VARCHAR2(30)
+ SALARY                                             NUMBER(10)
+ EMAIL                                              VARCHAR2(20)
+
+SQL> rename emp_details to employee;
+
+Table renamed.
+
+SQL> alter table employee rename emp_name to employee_name;
+alter table employee rename emp_name to employee_name
+                            *
+ERROR at line 1:
+ORA-14155: missing PARTITION or SUBPARTITION keyword 
+
+
+SQL> alter table employee rename column emp_name to employee_name;
+
+Table altered.
+
+SQL> alter table employee rename constraint emp_name to employee_name;
+alter table employee rename constraint emp_name to employee_name
+*
+ERROR at line 1:
+ORA-23292: The constraint does not exist 
+
+
+SQL> alter table employee rename constraint emp_pk to empl_pk;
+
+Table altered.
+
+SQL> truncate table employee;
+
+Table truncated.
+
+SQL> create table project(project_id varchar2(5),project_name varchar2(30),emp_id varchar2(5) constraint pro_fk foreign key(emp_id) reference employee(emp_id) );
+create table project(project_id varchar2(5),project_name varchar2(30),emp_id varchar2(5) constraint pro_fk foreign key(emp_id) reference employee(emp_id) )
+                                                                                         *
+ERROR at line 1:
+ORA-02253: constraint specification not allowed here 
+
+
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMP_ID                                    NOT NULL VARCHAR2(5)
+ EMPLOYEE_NAME                             NOT NULL VARCHAR2(30)
+ SALARY                                             NUMBER(10)
+ EMAIL                                              VARCHAR2(20)
+
+SQL> create table project(project_id varchar2(5),project_name varchar2(30),emp_id varchar2(5), constraint pro_fk foreign key(emp_id) reference employee(emp_id) );
+create table project(project_id varchar2(5),project_name varchar2(30),emp_id varchar2(5), constraint pro_fk foreign key(emp_id) reference employee(emp_id) )
+                                                                                                                                *
+ERROR at line 1:
+ORA-00905: missing keyword 
+
+
+SQL> create table project(project_id varchar2(5),project_name varchar2(30),emp_id varchar2(5), constraint pro_fk foreign key(emp_id) references mployee(emp_id) );
+create table project(project_id varchar2(5),project_name varchar2(30),emp_id varchar2(5), constraint pro_fk foreign key(emp_id) references mployee(emp_id) )
+                                                                                                                                           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> create table project(project_id varchar2(5),project_name varchar2(30),emp_id varchar2(5), constraint pro_fk foreign key(emp_id) references employee(emp_id) );
+
+Table created.
+
+SQL> desc project;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ PROJECT_ID                                         VARCHAR2(5)
+ PROJECT_NAME                                       VARCHAR2(30)
+ EMP_ID                                             VARCHAR2(5)
+
+SQL> spool off;

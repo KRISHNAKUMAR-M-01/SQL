@@ -1,0 +1,285 @@
+SQL> desc department;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DEPT_ID                                   NOT NULL VARCHAR2(5)
+ DEPT_NAME                                          VARCHAR2(20)
+ LOCATION                                  NOT NULL VARCHAR2(20)
+
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMP_ID                                    NOT NULL VARCHAR2(5)
+ EMPLOYEE_NAME                             NOT NULL VARCHAR2(30)
+ SALARY                                             NUMBER(10)
+ EMAIL                                              VARCHAR2(20)
+
+SQL> insert into department values('&dept_id','&dept_name','&location');
+Enter value for dept_id: D01
+Enter value for dept_name: HR
+Enter value for location: Chennai
+old   1: insert into department values('&dept_id','&dept_name','&location')
+new   1: insert into department values('D01','HR','Chennai')
+
+1 row created.
+
+SQL> /
+Enter value for dept_id: D02
+Enter value for dept_name: IT
+Enter value for location: Bangalore
+old   1: insert into department values('&dept_id','&dept_name','&location')
+new   1: insert into department values('D02','IT','Bangalore')
+
+1 row created.
+
+SQL> select * from employee;
+
+no rows selected
+
+SQL> select * from department;
+
+DEPT_ DEPT_NAME            LOCATION                                             
+----- -------------------- --------------------                                 
+D01   HR                   Chennai                                              
+D02   IT                   Bangalore                                            
+
+SQL> alter table employee add dept_id varchar(5),constarint dept_fk foreign key(dept_id) references department(dep_id);
+alter table employee add dept_id varchar(5),constarint dept_fk foreign key(dept_id) references department(dep_id)
+                                           *
+ERROR at line 1:
+ORA-01735: invalid ALTER TABLE option 
+
+
+SQL> alter table employee add dept_id varchar2(5),constarint dept_fk foreign key(dept_id) references department(dep_id);
+alter table employee add dept_id varchar2(5),constarint dept_fk foreign key(dept_id) references department(dep_id)
+                                            *
+ERROR at line 1:
+ORA-01735: invalid ALTER TABLE option 
+
+
+SQL> alter table employee add dept_id varchar2(5),constraint dept_fk foreign key(dept_id) references department(dep_id);
+alter table employee add dept_id varchar2(5),constraint dept_fk foreign key(dept_id) references department(dep_id)
+                                            *
+ERROR at line 1:
+ORA-01735: invalid ALTER TABLE option 
+
+
+SQL> alter table employee add dept_id varchar2(5);
+
+Table altered.
+
+SQL> alter table employee add constraint dept_fk foreign key(dept_id) references department(dep_id);
+alter table employee add constraint dept_fk foreign key(dept_id) references department(dep_id)
+                                                                                       *
+ERROR at line 1:
+ORA-00904: "DEP_ID": invalid identifier 
+
+
+SQL> alter table employee add constraint dept_fk foreign key(dept_id) references department(dept_id);
+
+Table altered.
+
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMP_ID                                    NOT NULL VARCHAR2(5)
+ EMPLOYEE_NAME                             NOT NULL VARCHAR2(30)
+ SALARY                                             NUMBER(10)
+ EMAIL                                              VARCHAR2(20)
+ DEPT_ID                                            VARCHAR2(5)
+
+SQL> insert into employee values('&emp_id','&employee_name',&salary ,'&email','&dept_id');
+Enter value for emp_id: E01
+Enter value for employee_name: krish
+Enter value for salary: 25000
+Enter value for email: D01
+Enter value for dept_id: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+old   1: insert into employee values('&emp_id','&employee_name',&salary ,'&email','&dept_id')
+new   1: insert into employee values('E01','krish',25000 ,'D01','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+insert into employee values('E01','krish',25000 ,'D01','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+                                                       *
+ERROR at line 1:
+ORA-12899: value too large for column "SYSTEM"."EMPLOYEE"."DEPT_ID" (actual: 
+57, maximum: 5) 
+
+
+SQL> insert into employee values('&emp_id','&employee_name',&salary ,'&email','&dept_id');
+Enter value for emp_id: E01
+Enter value for employee_name: Krish
+Enter value for salary: 25000
+Enter value for email: kris@gmail.com
+Enter value for dept_id: D01
+old   1: insert into employee values('&emp_id','&employee_name',&salary ,'&email','&dept_id')
+new   1: insert into employee values('E01','Krish',25000 ,'kris@gmail.com','D01')
+
+1 row created.
+
+SQL> /
+Enter value for emp_id: E02
+Enter value for employee_name: kishore
+Enter value for salary: 30000
+Enter value for email: kishore@gmail.com
+Enter value for dept_id: D02
+old   1: insert into employee values('&emp_id','&employee_name',&salary ,'&email','&dept_id')
+new   1: insert into employee values('E02','kishore',30000 ,'kishore@gmail.com','D02')
+
+1 row created.
+
+SQL> /
+Enter value for emp_id: E03
+Enter value for employee_name: Jeba
+Enter value for salary: 28000
+Enter value for email: jeba@gmail.com
+Enter value for dept_id: D02
+old   1: insert into employee values('&emp_id','&employee_name',&salary ,'&email','&dept_id')
+new   1: insert into employee values('E03','Jeba',28000 ,'jeba@gmail.com','D02')
+
+1 row created.
+
+SQL> insert into project values('&project_id','&project_name','&emp_id');
+Enter value for project_id: P01
+Enter value for project_name: BankingApp 
+Enter value for emp_id: E02
+old   1: insert into project values('&project_id','&project_name','&emp_id')
+new   1: insert into project values('P01','BankingApp ','E02')
+
+1 row created.
+
+SQL> /
+Enter value for project_id: P02
+Enter value for project_name: E-commerce
+Enter value for emp_id: E03
+old   1: insert into project values('&project_id','&project_name','&emp_id')
+new   1: insert into project values('P02','E-commerce','E03')
+
+1 row created.
+
+SQL> select *from department;
+
+DEPT_ DEPT_NAME            LOCATION                                             
+----- -------------------- --------------------                                 
+D01   HR                   Chennai                                              
+D02   IT                   Bangalore                                            
+
+SQL> select *from employee;
+
+EMP_I EMPLOYEE_NAME                      SALARY EMAIL                DEPT_      
+----- ------------------------------ ---------- -------------------- -----      
+E01   Krish                               25000 kris@gmail.com       D01        
+E02   kishore                             30000 kishore@gmail.com    D02        
+E03   Jeba                                28000 jeba@gmail.com       D02        
+
+SQL> select *from project;
+
+PROJE PROJECT_NAME                   EMP_I                                      
+----- ------------------------------ -----                                      
+P01   BankingApp                     E02                                        
+P02   E-commerce                     E03                                        
+
+SQL> select employee_name,salary from employee;
+
+EMPLOYEE_NAME                      SALARY                                       
+------------------------------ ----------                                       
+Krish                               25000                                       
+kishore                             30000                                       
+Jeba                                28000                                       
+
+SQL> select * from employee where salary>27000;
+
+EMP_I EMPLOYEE_NAME                      SALARY EMAIL                DEPT_      
+----- ------------------------------ ---------- -------------------- -----      
+E02   kishore                             30000 kishore@gmail.com    D02        
+E03   Jeba                                28000 jeba@gmail.com       D02        
+
+SQL> select * from employee where dept_id=D02
+  2  ;
+select * from employee where dept_id=D02
+                                     *
+ERROR at line 1:
+ORA-00904: "D02": invalid identifier 
+
+
+SQL> select * from employee where dept_id='D02';
+
+EMP_I EMPLOYEE_NAME                      SALARY EMAIL                DEPT_      
+----- ------------------------------ ---------- -------------------- -----      
+E02   kishore                             30000 kishore@gmail.com    D02        
+E03   Jeba                                28000 jeba@gmail.com       D02        
+
+SQL> select * from employee order by salary desc;
+
+EMP_I EMPLOYEE_NAME                      SALARY EMAIL                DEPT_      
+----- ------------------------------ ---------- -------------------- -----      
+E02   kishore                             30000 kishore@gmail.com    D02        
+E03   Jeba                                28000 jeba@gmail.com       D02        
+E01   Krish                               25000 kris@gmail.com       D01        
+
+SQL> update employee set salary=27000 where emp_id=E01;
+update employee set salary=27000 where emp_id=E01
+                                              *
+ERROR at line 1:
+ORA-00904: "E01": invalid identifier 
+
+
+SQL> update employee set salary=27000 where emp_id='E01';
+
+1 row updated.
+
+SQL> select * from employee order by salary desc;
+
+EMP_I EMPLOYEE_NAME                      SALARY EMAIL                DEPT_      
+----- ------------------------------ ---------- -------------------- -----      
+E02   kishore                             30000 kishore@gmail.com    D02        
+E03   Jeba                                28000 jeba@gmail.com       D02        
+E01   Krish                               27000 kris@gmail.com       D01        
+
+SQL> update employee set salary=salary+5000;
+
+3 rows updated.
+
+SQL> select * from employee order by salary desc;
+
+EMP_I EMPLOYEE_NAME                      SALARY EMAIL                DEPT_      
+----- ------------------------------ ---------- -------------------- -----      
+E02   kishore                             35000 kishore@gmail.com    D02        
+E03   Jeba                                33000 jeba@gmail.com       D02        
+E01   Krish                               32000 kris@gmail.com       D01        
+
+SQL> update employee set dept_id=D01 where emp_id='E03';
+update employee set dept_id=D01 where emp_id='E03'
+                            *
+ERROR at line 1:
+ORA-00904: "D01": invalid identifier 
+
+
+SQL> update employee set dept_id='D01' where emp_id='E03';
+
+1 row updated.
+
+SQL> select * from employee;
+
+EMP_I EMPLOYEE_NAME                      SALARY EMAIL                DEPT_      
+----- ------------------------------ ---------- -------------------- -----      
+E01   Krish                               32000 kris@gmail.com       D01        
+E02   kishore                             35000 kishore@gmail.com    D02        
+E03   Jeba                                33000 jeba@gmail.com       D01        
+
+SQL> delete from employee where emp_id='e03';
+
+0 rows deleted.
+
+SQL> delete from employee where emp_id='E03';
+delete from employee where emp_id='E03'
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (SYSTEM.PRO_FK) violated - child record found 
+
+
+SQL> delete from employee where emp_id='E01';
+
+1 row deleted.
+
+SQL> delete from employee where salary<26000;
+
+0 rows deleted.
+
+SQL> spool off;
